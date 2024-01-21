@@ -1,17 +1,10 @@
 [
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
+    "objectID": "posts/homework-0/index.html",
+    "href": "posts/homework-0/index.html",
+    "title": "Homework 0",
     "section": "",
-    "text": "This is a post with executable code."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "pic16b",
-    "section": "",
-    "text": "Homework 0\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 11, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\nNo matching items"
+    "text": "In this blog post, I will be describing how to make a simple line plot of the Palmer Penguins dataset.\nTo start, we first import pandas in order to download and read the dataset.\n\n\nCode\nimport pandas as pd\nurl = \"https://raw.githubusercontent.com/pic16b-ucla/24W/main/datasets/palmer_penguins.csv\"\npenguins = pd.read_csv(url)\n\n\nTo help with plotting, we import matplotlib and seaborn (a library for matplotlib).\n\n\nCode\nimport seaborn as sns \nfrom matplotlib import pyplot as plt\nimport numpy as np\n\n\nWe select only the subset of data that pertains to Adelie penguins.\n\n\nCode\nadelie = penguins[penguins[\"Species\"] == \"Adelie Penguin (Pygoscelis adeliae)\"]\n\n\nFinally, we can plot the data using seaborn’s lineplot function by specifying the dataset and the axes we wish to plot against.\n\n\nCode\nsns.lineplot(data = adelie, x = \"Flipper Length (mm)\", y = \"Body Mass (g)\").set(title=\"Flipper Length (mm) vs Body Mass (g) for Adelie Penguins\")"
   },
   {
     "objectID": "about.html",
@@ -21,10 +14,10 @@
     "text": "About this blog"
   },
   {
-    "objectID": "posts/homework-0/index.html",
-    "href": "posts/homework-0/index.html",
-    "title": "Homework 0",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "PIC 16B Blog",
     "section": "",
-    "text": "title: “Homework 0” author: “Ethan Buntaran” date: “January 20, 2024” format: html: code-fold: true\n\nHomework 0\nIn this blog post, I will be describing how to make a simple line plot of the Palmer Penguins dataset.\nTo start, we first import pandas in order to download and read the dataset.\n\nimport pandas as pd\nurl = \"https://raw.githubusercontent.com/pic16b-ucla/24W/main/datasets/palmer_penguins.csv\"\npenguins = pd.read_csv(url)\n\nTo help with plotting, we import matplotlib and seaborn (a library for matplotlib).\n\nimport seaborn as sns \nfrom matplotlib import pyplot as plt\nimport numpy as np\n\nWe select only the subset of data that pertains to Adelie penguins.\n\nadelie = penguins[penguins[\"Species\"] == \"Adelie Penguin (Pygoscelis adeliae)\"]\n\nFinally, we can plot the data using seaborn’s lineplot function by specifying the dataset and the axes we wish to plot against.\n\nsns.lineplot(data = adelie, x = \"Flipper Length (mm)\", y = \"Body Mass (g)\").set(title=\"Flipper Length (mm) vs Body Mass (g) for Adelie Penguins\")"
+    "text": "Homework 0\n\n\n\n\n\n\n\n\n\n\n\nJan 20, 2024\n\n\nEthan Buntaran\n\n\n\n\n\n\nNo matching items"
   }
 ]
