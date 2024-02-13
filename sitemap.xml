@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ebuntaran.github.io/pic16b/posts/homework-2/index.html</loc>
-    <lastmod>2024-01-30T09:09:08.382Z</lastmod>
+    <loc>https://ebuntaran.github.io/pic16b/posts/homework-3/index.html</loc>
+    <lastmod>2024-02-13T01:36:33.224Z</lastmod>
   </url>
   <url>
-    <loc>https://ebuntaran.github.io/pic16b/posts/homework-0/index.html</loc>
-    <lastmod>2024-01-26T06:42:53.039Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ebuntaran.github.io/pic16b/about.html</loc>
-    <lastmod>2024-01-12T00:49:35.454Z</lastmod>
+    <loc>https://ebuntaran.github.io/pic16b/posts/homework-1/index.html</loc>
+    <lastmod>2024-02-05T23:31:39.939Z</lastmod>
   </url>
   <url>
     <loc>https://ebuntaran.github.io/pic16b/index.html</loc>
     <lastmod>2024-01-21T01:37:38.980Z</lastmod>
   </url>
   <url>
-    <loc>https://ebuntaran.github.io/pic16b/posts/homework-1/index.html</loc>
-    <lastmod>2024-02-05T23:31:39.939Z</lastmod>
+    <loc>https://ebuntaran.github.io/pic16b/about.html</loc>
+    <lastmod>2024-01-12T00:49:35.454Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ebuntaran.github.io/pic16b/posts/homework-0/index.html</loc>
+    <lastmod>2024-01-26T06:42:53.039Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ebuntaran.github.io/pic16b/posts/homework-2/index.html</loc>
+    <lastmod>2024-01-30T09:09:08.382Z</lastmod>
   </url>
 </urlset>
