@@ -425,9 +425,9 @@ def advance_time_jax(u, alpha):
 </div>
 </div>
 </section>
-<section id="conclusion" class="level1">
-<h1>Conclusion</h1>
-<p>Overall, each method was faster than the one before it, with direct operation with JAX being the fastest. It was also the most intuitive for me to write, since it relies only on element-by-element addition rather than matrix multiplication.</p>
+<section id="comparison-of-implementations" class="level1">
+<h1>Comparison of implementations</h1>
+<p>The first method (matrix multiplication) was the easiest to code (since most of the code was already provided by professor) but it was also the slowest by far (taking 89.7 seconds). The second method with sparse matrices provided a significant speedup (taking only 7.2 seconds), and it wasn’t that much work to modify the first method to code it. The third method with direct operation was the easiest for me to understand since it draws directly on the differential equation, and it also provided another dramatic decrease in execution time (taking 0.37 seconds). The final method was again easy to derive from the third, and it provided a moderate speed boost from the already-fast third method (taking 0.18 seconds). Overall, if I had to code this again from scratch, I would definitely go with the fourth method.</p>
 
 
 </section>
