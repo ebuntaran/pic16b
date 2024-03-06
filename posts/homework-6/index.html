@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Ethan Buntaran">
+<meta name="dcterms.date" content="2024-03-05">
 
-<title>PIC 16B</title>
+<title>PIC 16B - Fake News Classification with Keras</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -147,7 +149,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Fake News Classification with Keras</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Ethan Buntaran </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 5, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
@@ -157,14 +187,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+
 <p>In this tutorial, I will be demonstrating how to categorize fake news titles using Keras.</p>
 <section id="setting-up" class="level1">
 <h1>Setting Up</h1>
 <p>We start with some of the necessary imports:</p>
-<div id="cell-1" class="cell">
+<div id="cell-2" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install keras <span class="op">--</span>upgrade</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-2" class="cell" data-execution_count="2">
+<div id="cell-3" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"KERAS_BACKEND"</span>] <span class="op">=</span> <span class="st">"tensorflow"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> keras</span>
@@ -176,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now import the data:</p>
-<div id="cell-4" class="cell" data-execution_count="3">
+<div id="cell-5" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>train_url <span class="op">=</span> <span class="st">"https://github.com/PhilChodrow/PIC16b/blob/master/datasets/fake_news_train.csv?raw=true"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(train_url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -184,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-preparation" class="level1">
 <h1>Data Preparation</h1>
 <p>We construct the dataset we will use to train the model. Using the <code>nltk</code> stopwords list, we can remove stopwords from the dataset, and we can also convert all words to lowercase.</p>
-<div id="cell-6" class="cell" data-outputid="b5daf6ab-30fa-4f5e-f3e6-512c952b26da" data-execution_count="4">
+<div id="cell-7" class="cell" data-outputid="b5daf6ab-30fa-4f5e-f3e6-512c952b26da" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'stopwords'</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords</span>
@@ -211,11 +242,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The dataset can be constructed by calling this function on the imported dataframe.</p>
-<div id="cell-8" class="cell" data-execution_count="5">
+<div id="cell-9" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> make_dataset(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We split the dataset into three sets: The training set takes 60% of the data, the validation set takes 20% of the data, and the testing set takes another 20% of the data.</p>
-<div id="cell-10" class="cell" data-execution_count="6">
+<div id="cell-11" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> dataset.shuffle(buffer_size <span class="op">=</span> <span class="bu">len</span>(data), reshuffle_each_iteration<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>train_size <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.6</span><span class="op">*</span><span class="bu">len</span>(data))</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>val_size <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.2</span><span class="op">*</span><span class="bu">len</span>(data))</span>
@@ -228,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="base-rate" class="level1">
 <h1>Base Rate</h1>
 <p>We can determine the base rate by considering the proportion of entries with the most common label:</p>
-<div id="cell-12" class="cell" data-outputid="c0ff54f3-7c2b-43ff-a2d5-99db333309db" data-execution_count="7">
+<div id="cell-13" class="cell" data-outputid="c0ff54f3-7c2b-43ff-a2d5-99db333309db" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>counter <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ , fake <span class="kw">in</span> train:</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> fake <span class="op">==</span> <span class="dv">1</span>:</span>
@@ -243,7 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="model-preparation" class="level1">
 <h1>Model Preparation</h1>
 <p>We start by defining the text vectorization layer:</p>
-<div id="cell-14" class="cell" data-execution_count="8">
+<div id="cell-15" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>size_vocabulary <span class="op">=</span> <span class="dv">2000</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>vectorize_layer <span class="op">=</span> TextVectorization(</span>
@@ -253,7 +284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>vectorize_layer.adapt(train.<span class="bu">map</span>(<span class="kw">lambda</span> x, y: x[<span class="st">"title"</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can then define the various other layers that will be used in each model:</p>
-<div id="cell-16" class="cell" data-execution_count="9">
+<div id="cell-17" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>title_input <span class="op">=</span> keras.Input(shape<span class="op">=</span>(<span class="dv">1</span>,), name<span class="op">=</span><span class="st">"title"</span>, dtype<span class="op">=</span><span class="st">"string"</span>) <span class="co">#title input layer</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>text_input <span class="op">=</span> keras.Input(shape<span class="op">=</span>(<span class="dv">1</span>,), name<span class="op">=</span><span class="st">"text"</span>, dtype<span class="op">=</span><span class="st">"string"</span>) <span class="co"># text input layer</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -295,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="model-1-title-only" class="level1">
 <h1>Model 1: Title Only</h1>
 <p>The first model vectorizes the title text, runs it through an embedding layer, then a global_average_pooling layer, ending with two dense layers, with dropout layers interspersed to combat overfitting. I tried using an LSTM layer, but it was way too slow, even with a GPU.</p>
-<div id="cell-18" class="cell" data-outputid="401fd09d-ab90-42e8-89c7-bc80b6db1da7" data-execution_count="29">
+<div id="cell-19" class="cell" data-outputid="401fd09d-ab90-42e8-89c7-bc80b6db1da7" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="op">=</span> keras.Model(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> title_input,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    outputs <span class="op">=</span> fake_pred_title</span>
@@ -313,7 +344,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-19" class="cell" data-outputid="58f3f7f5-610f-48f1-efcf-96d30033fb8b" data-execution_count="10">
+<div id="cell-20" class="cell" data-outputid="58f3f7f5-610f-48f1-efcf-96d30033fb8b" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model1.<span class="bu">compile</span>(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    optimizer<span class="op">=</span><span class="st">"adam"</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> losses.BinaryCrossentropy(from_logits<span class="op">=</span><span class="va">True</span>),</span>
@@ -381,7 +412,7 @@ Epoch 20/50
 <section id="model-2-text-only" class="level1">
 <h1>Model 2: Text Only</h1>
 <p>This model follows exactly the same structure as Model 1, except that it is fed only the text input instead of only the title input.</p>
-<div id="cell-21" class="cell" data-outputid="b6c59b8c-b0a7-4ba7-f80e-b1259170b9fb" data-execution_count="30">
+<div id="cell-22" class="cell" data-outputid="b6c59b8c-b0a7-4ba7-f80e-b1259170b9fb" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="op">=</span> keras.Model(</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> text_input,</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    outputs <span class="op">=</span> fake_pred_text</span>
@@ -399,7 +430,7 @@ Epoch 20/50
 </div>
 </div>
 </div>
-<div id="cell-22" class="cell" data-outputid="65d80681-4e38-4a8c-c397-113a1c3fe459" data-execution_count="11">
+<div id="cell-23" class="cell" data-outputid="65d80681-4e38-4a8c-c397-113a1c3fe459" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model2.<span class="bu">compile</span>(</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> losses.BinaryCrossentropy(from_logits<span class="op">=</span><span class="va">True</span>),</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    optimizer<span class="op">=</span><span class="st">"adam"</span>,</span>
@@ -466,7 +497,7 @@ Epoch 20/50
 <section id="model-3-title-and-text" class="level1">
 <h1>Model 3: Title and Text</h1>
 <p>This model again functions similarly to the previous two models, except that it takes both inputs instead of just one. Both inputs are passed to the vectorization and embedding layers, then go through their global_average_pooling layer/dense/dropout layers before being concatenated, and ultimately ending with the dense classification layer.</p>
-<div id="cell-25" class="cell" data-outputid="42dcdc46-5a2e-4353-9457-003ebb6c2176" data-execution_count="31">
+<div id="cell-26" class="cell" data-outputid="42dcdc46-5a2e-4353-9457-003ebb6c2176" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="op">=</span> keras.Model(</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> [title_input, text_input],</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    outputs <span class="op">=</span> fake_pred_both</span>
@@ -484,7 +515,7 @@ Epoch 20/50
 </div>
 </div>
 </div>
-<div id="cell-26" class="cell" data-outputid="7c9b370a-0178-475c-a145-48847cb8fad7" data-execution_count="12">
+<div id="cell-27" class="cell" data-outputid="7c9b370a-0178-475c-a145-48847cb8fad7" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model3.<span class="bu">compile</span>(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> losses.BinaryCrossentropy(from_logits<span class="op">=</span><span class="va">True</span>),</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    optimizer<span class="op">=</span><span class="st">"adam"</span>,</span>
@@ -535,7 +566,7 @@ Epoch 12/50
 </section>
 <section id="assessing-accuracy" class="level1">
 <h1>Assessing Accuracy</h1>
-<div id="cell-28" class="cell" data-outputid="89f7e0f7-d131-48cb-c62b-60475f2f875f" data-execution_count="13">
+<div id="cell-29" class="cell" data-outputid="89f7e0f7-d131-48cb-c62b-60475f2f875f" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model3.evaluate(test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>4491/4491 ━━━━━━━━━━━━━━━━━━━━ 4s 817us/step - accuracy: 0.9810 - loss: 0.0572</code></pre>
@@ -546,7 +577,7 @@ Epoch 12/50
 </div>
 <p>Model 3 had 98% accuracy on the unseen testing data, which is pretty good!</p>
 <p>We can also test it on another testing dataset:</p>
-<div id="cell-30" class="cell" data-outputid="0dcd8ec6-1e05-492f-abda-6432c824747a" data-execution_count="32">
+<div id="cell-31" class="cell" data-outputid="0dcd8ec6-1e05-492f-abda-6432c824747a" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>test_url <span class="op">=</span> <span class="st">"https://github.com/PhilChodrow/PIC16b/blob/master/datasets/fake_news_test.csv?raw=true"</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> pd.read_csv(test_url)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>test_dataset <span class="op">=</span> make_dataset(test_data)</span>
@@ -560,11 +591,11 @@ Epoch 12/50
 </div>
 <p>With this, we can be sure that our model can predict fake news with 97% accuracy.</p>
 <p>#Embedding Visualization</p>
-<div id="cell-32" class="cell" data-execution_count="26">
+<div id="cell-33" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.io <span class="im">as</span> pio</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>pio.renderers.default<span class="op">=</span><span class="st">"iframe"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-33" class="cell" data-outputid="1ece8fe9-aa7a-4d40-f7de-daf85a7b7026" data-execution_count="27">
+<div id="cell-34" class="cell" data-outputid="1ece8fe9-aa7a-4d40-f7de-daf85a7b7026" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> model3.get_layer(<span class="st">'embedding'</span>).get_weights()[<span class="dv">0</span>] <span class="co"># get the weights from the embedding layer</span></span>
